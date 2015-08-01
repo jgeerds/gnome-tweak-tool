@@ -26,7 +26,7 @@ from gi.repository import Gtk
 from gi.repository import GLib
 
 import gtweak
-from gtweak.utils import walk_directories, make_combo_list_with_default, extract_zip_file, get_resource_dirs
+from gtweak.utils import walk_directories, make_combo_list_with_default, extract_zip_file, get_resource_dirs, get_unique_resources
 from gtweak.tweakmodel import Tweak, TWEAK_GROUP_APPEARANCE
 from gtweak.gshellwrapper import GnomeShellFactory
 from gtweak.gsettings import GSettingsSetting
@@ -49,7 +49,7 @@ class GtkThemeSwitcher(GSettingsComboTweak):
         valid = walk_directories(get_resource_dirs('themes'), lambda d:
                     os.path.exists(os.path.join(d, "gtk-2.0")) and \
                         os.path.exists(os.path.join(d, "gtk-3.0")))
-        return valid
+        return get_unique_resources(valid)
 
 class IconThemeSwitcher(GSettingsComboTweak):
     def __init__(self, **options):
@@ -64,7 +64,7 @@ class IconThemeSwitcher(GSettingsComboTweak):
         valid = walk_directories(get_resource_dirs("icons"), lambda d:
                     os.path.isdir(d) and \
 			os.path.exists(os.path.join(d, "index.theme")))
-        return valid
+        return get_unique_resources(valid)
 
 class CursorThemeSwitcher(GSettingsComboTweak):
     def __init__(self, **options):
@@ -79,7 +79,7 @@ class CursorThemeSwitcher(GSettingsComboTweak):
         valid = walk_directories(get_resource_dirs("icons"), lambda d:
                     os.path.isdir(d) and \
                         os.path.exists(os.path.join(d, "cursors")))
-        return valid
+        return get_unique_resources(valid)
 
 class ShellThemeTweak(Gtk.Box, Tweak):
 

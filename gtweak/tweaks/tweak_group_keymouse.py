@@ -20,7 +20,7 @@ import os.path
 from gi.repository import GLib
 
 import gtweak
-from gtweak.utils import XSettingsOverrides, walk_directories, make_combo_list_with_default, get_resource_dirs
+from gtweak.utils import XSettingsOverrides, walk_directories, make_combo_list_with_default, get_resource_dirs, get_unique_resources
 from gtweak.widgets import ListBoxTweakGroup, GSettingsComboTweak, GSettingsSwitchTweak, GetterSetterSwitchTweak, Title, GSettingsComboEnumTweak
 
 class PrimaryPasteTweak(GetterSetterSwitchTweak):
@@ -51,7 +51,7 @@ class KeyThemeSwitcher(GSettingsComboTweak):
         valid = walk_directories(get_resource_dirs("themes"), lambda d:
                     os.path.isfile(os.path.join(d, "gtk-3.0", "gtk-keys.css")) and \
                     os.path.isfile(os.path.join(d, "gtk-2.0-key", "gtkrc")))
-        return valid
+        return get_unique_resources(valid)
 
 TWEAK_GROUPS = [
     ListBoxTweakGroup(_("Keyboard and Mouse"),
