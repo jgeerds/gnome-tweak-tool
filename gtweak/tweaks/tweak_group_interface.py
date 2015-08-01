@@ -26,7 +26,7 @@ from gi.repository import Gtk
 from gi.repository import GLib
 
 import gtweak
-from gtweak.utils import walk_directories, make_combo_list_with_default, extract_zip_file
+from gtweak.utils import walk_directories, make_combo_list_with_default, extract_zip_file, get_resource_dirs
 from gtweak.tweakmodel import Tweak, TWEAK_GROUP_APPEARANCE
 from gtweak.gshellwrapper import GnomeShellFactory
 from gtweak.gsettings import GSettingsSetting
@@ -46,10 +46,7 @@ class GtkThemeSwitcher(GSettingsComboTweak):
 
     def _get_valid_themes(self):
         """ Only shows themes that have variations for gtk+-3 and gtk+-2 """
-        dirs = ( os.path.join(gtweak.DATA_DIR, "themes"),
-                 os.path.join(GLib.get_user_data_dir(), "themes"),
-                 os.path.join(os.path.expanduser("~"), ".themes"))
-        valid = walk_directories(dirs, lambda d:
+        valid = walk_directories(get_resource_dirs('themes'), lambda d:
                     os.path.exists(os.path.join(d, "gtk-2.0")) and \
                         os.path.exists(os.path.join(d, "gtk-3.0")))
         return valid
@@ -64,10 +61,7 @@ class IconThemeSwitcher(GSettingsComboTweak):
             **options)
 
     def _get_valid_icon_themes(self):
-        dirs = ( os.path.join(gtweak.DATA_DIR, "icons"),
-                 os.path.join(GLib.get_user_data_dir(), "icons"),
-                 os.path.join(os.path.expanduser("~"), ".icons"))
-        valid = walk_directories(dirs, lambda d:
+        valid = walk_directories(get_resource_dirs("icons"), lambda d:
                     os.path.isdir(d) and \
 			os.path.exists(os.path.join(d, "index.theme")))
         return valid
@@ -82,10 +76,7 @@ class CursorThemeSwitcher(GSettingsComboTweak):
             **options)
 
     def _get_valid_cursor_themes(self):
-        dirs = ( os.path.join(gtweak.DATA_DIR, "icons"),
-                 os.path.join(GLib.get_user_data_dir(), "icons"),
-                 os.path.join(os.path.expanduser("~"), ".icons"))
-        valid = walk_directories(dirs, lambda d:
+        valid = walk_directories(get_resource_dirs("icons"), lambda d:
                     os.path.isdir(d) and \
                         os.path.exists(os.path.join(d, "cursors")))
         return valid

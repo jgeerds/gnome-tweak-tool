@@ -20,7 +20,7 @@ import os.path
 from gi.repository import GLib
 
 import gtweak
-from gtweak.utils import XSettingsOverrides, walk_directories, make_combo_list_with_default
+from gtweak.utils import XSettingsOverrides, walk_directories, make_combo_list_with_default, get_resource_dirs
 from gtweak.widgets import ListBoxTweakGroup, GSettingsComboTweak, GSettingsSwitchTweak, GetterSetterSwitchTweak, Title, GSettingsComboEnumTweak
 
 class PrimaryPasteTweak(GetterSetterSwitchTweak):
@@ -48,10 +48,7 @@ class KeyThemeSwitcher(GSettingsComboTweak):
             **options)
 
     def _get_valid_key_themes(self):
-        dirs = ( os.path.join(gtweak.DATA_DIR, "themes"),
-                 os.path.join(GLib.get_user_data_dir(), "themes"),
-                 os.path.join(os.path.expanduser("~"), ".themes"))
-        valid = walk_directories(dirs, lambda d:
+        valid = walk_directories(get_resource_dirs("themes"), lambda d:
                     os.path.isfile(os.path.join(d, "gtk-3.0", "gtk-keys.css")) and \
                     os.path.isfile(os.path.join(d, "gtk-2.0-key", "gtkrc")))
         return valid
