@@ -131,6 +131,22 @@ def get_resource_dirs(resource):
 
     return [dir for dir in dirs if os.path.isdir(dir)]
 
+def get_unique_resources(dirs):
+    """Filter out duplicated resources.
+
+    :param list dirs:
+        List of resource dirs (e.g. /usr/share/themes/Adwaita)
+    :return:
+        List of dirs without duplicated resources
+    """
+    unique_dirs = {}
+    for dir in dirs:
+        basename = os.path.basename(dir)
+        if basename not in unique_dirs:
+            unique_dirs[basename] = dir
+
+    return unique_dirs
+
 @singleton
 class AutostartManager:
 
