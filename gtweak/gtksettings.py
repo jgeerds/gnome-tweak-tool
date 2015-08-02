@@ -35,6 +35,10 @@ class GtkSettingsManager:
     def _get_keyfile(self):
         keyfile = None
         try:
+            config_dir = os.path.dirname(self._path)
+            if not os.path.isdir(config_dir):
+                os.makedirs(config_dir)
+
             keyfile = GLib.KeyFile()
             keyfile.load_from_file(self._path, 0)
         except MemoryError:
